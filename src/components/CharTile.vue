@@ -1,7 +1,7 @@
 <template>
   <div class="Char">
-    <img src="../assets/luke1.jpg">
-    <h1>{{msg}}</h1>
+    <img src="../assets/luke1.jpg" class="responsive">
+    <h1>{{name}}</h1>
   </div>
 </template>
 
@@ -10,21 +10,15 @@ export default {
   name: 'CharTile',
 
   props: {
-    msg: String
+    name: String
   },
-
-  data() {
-    return{
-      charSearch: '',
-    }
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+h1 {
+  font-size: 5vw;
 }
 ul {
   list-style-type: none;
@@ -36,5 +30,17 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.char {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.responsive {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
 }
 </style>

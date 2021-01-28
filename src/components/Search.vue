@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="Search">
     <h1>{{ msg }}</h1>
     <input type="text" v-model="charSearch">
     <h1>{{charSearch}}</h1>
@@ -7,13 +7,13 @@
     <h2>Showing X of {{results.length}}</h2>
     <DropDown />
   <div>
-    <ul>
-       <li v-for="(obj, index) in results" :key="index" @click="checkObj(obj)" >
-        <CharTile msg="Placeholder"/>
+    <ul class="result">
+       <li :class="expand ? 'active' : 'hidden' " v-for="(obj, index) in results" :key="index" @click="checkObj(obj)" >
+        <CharTile :name='obj.name'/>
       </li>
     </ul>
   </div>
-    <button @click="loadMore">Load More</button>
+    <button class="expand_list" v-if="!expand" @click="expandList">Load More</button>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import DropDown from './Dropdown.vue'
 export default {
   name: 'Search',
   props: {
-    msg: String
+    name: String
   },
   components : {
     CharTile,
@@ -34,29 +34,26 @@ export default {
       charSearch: '',
       result: Object,
       results: [],
+      expand: false,
     }
     
   },
     methods: {
       getSwData() {
-          fetch('https://swapi.dev/api/planets/1/').then(response=>response.json())
+          fetch('https://swapi.dev/api/people/').then(response=>response.json())
           .then(data=>{
-            this.result = data;
-            this.fillList() 
+            this.results = [...data.results]; 
+            console.log(this.results)
           })
-      },
-      fillList() 
-      {
-        let i = 0;
-        for(i;i<5;i++)
-        {
-          console.log("A")
-          this.results.push(this.result);
-        }
       },
       checkObj(obj)
       {
-        console.log(obj)
+        console.log("OBJ je")
+        console.log(obj.name)
+      },
+      expandList ()
+      {
+        this.expand = !this.expand
       }
   }
 }
@@ -71,6 +68,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
@@ -78,4 +76,23 @@ li {
 a {
   color: #42b983;
 }
+
+ul li.hidden:nth-of-type(1n+5) {
+  display: none;
+}
+
+.active {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+}
+
+.expand_list{
+  width: 98%;
+}
+
+
 </style>
