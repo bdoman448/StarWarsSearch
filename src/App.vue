@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Star Wars Character Search</h1>
-    <Search msg="Star Wars Character Search"/>
+    <Search/>
   </div>
 </template>
 

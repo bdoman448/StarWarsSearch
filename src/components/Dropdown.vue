@@ -1,48 +1,53 @@
 <template>
   <div class="hello">
-      <button @click="dropDown">Sort By</button>
-      <ul v-if="menuOpen">
-          <button @click="dropDown">Alphebetical Asc</button>
-          <button @click="dropDown">Alphebetical Desc</button>
-          <button @click="dropDown">Age</button>
-      </ul>
+    <button @click="dropDown" >Sort By</button>
+    <ul v-if="menuOpen">
+<!--       <button @click="sortOption('Asc')">Alphebetical Asc</button>
+      <button @click="sortOption('Dsc')">Alphebetical Desc</button>
+      <button @click="sortOption('Age')">Age</button> -->
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DropDown',
+  name: "DropDown",
   props: {
-    msg: String
+    list: Array,
   },
   data() {
-    return{
+    return {
       menuOpen: false,
-    }
-    
+    };
   },
-    methods: {
+  methods: {
     dropDown() {
-        this.menuOpen = !this.menuOpen;
-    }
-  }
-}
+      this.menuOpen = !this.menuOpen;
+    },
+/*     sortOption(option) {
+      if (option === "Asc") {
+        this.list.sort((a, b) => (a.name > b.name ? 1 : -1));
+      } else if (option === "Dsc") {
+        this.list.sort((a, b) => (a.name < b.name ? 1 : -1));
+      } else {
+        this.list.sort((a, b) => (a.age > b.age ? 1 : -1));
+      }
+    }, */
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
+
 ul {
+  display: inline-flex;
+  flex-direction: column;
   list-style-type: none;
   padding: 0;
 }
 li {
   display: inline-block;
-  margin: 0 10px;
 }
-a {
-  color: #42b983;
-}
+
 </style>
