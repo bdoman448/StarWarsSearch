@@ -1,18 +1,13 @@
 <template>
   <div id="app">
     <h1>Star Wars Character Search</h1>
-    <Search/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Search from './components/Search.vue'
-
 export default {
   name: 'App',
-  components: {
-    Search,
-  },
 }
 </script>
 

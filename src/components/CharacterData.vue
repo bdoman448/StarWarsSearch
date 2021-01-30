@@ -1,18 +1,23 @@
 <template>
-  <div class="Search">
-    <h1>Hello from {{ homeworld }}</h1>
-    <img src="../assets/trooper.jpg" class="responsive">
-    <h1>Vehicle {{ vehicle }}</h1>
-    <ul>
-      <li v-for="(starship,index) in starships" :key="index">
-        {{starship}}
-      </li>
-    </ul>
+  <div>
+    <h1>Hello from STARWARS</h1>
+  <div class="CharData">
+    <div class="Data">
+      <h2>Name: {{this.char.name}} </h2>
+      <h2>Height: {{this.char.height}} </h2>
+      <h2>Homeworld: {{this.homeworld}} </h2>
+      <div class="List">
+        <h2 @click="expandArray">Starship:</h2>
         <ul>
-      <li v-for="(vehicle,index) in vehicles" :key="index">
-        {{vehicle}}
-      </li>
-    </ul>
+          <li v-for="(starship,index) in starships" :key="index">
+            {{starship}}
+          </li>
+        </ul>
+      </div>
+    </div>
+          <img src="../assets/trooper.jpg" class="responsive">
+  </div>
+
   </div>
 </template>
 
@@ -24,7 +29,8 @@ export default {
       homeworld: "Search Character",
       starships: [],
       vehicles: [],
-      films: [],
+      hidden: true,
+      char: Object
     };
   },
 
@@ -32,26 +38,32 @@ export default {
     obj: Object,
   },
 
-  mounted() {
+  mounted () {
+    console.log(this.char)
     this.fetchData();
   },
 
   methods: {
     fetchData() {
-      fetch(this.obj.homeworld)
+     
+      this.char = this.$route.params.obj;
+       console.log("Before")
+      console.log(this.char)
+       console.log("After")
+      fetch(this.char.homeworld)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           this.homeworld = data.name;
         });
-      this.obj.starships.map((starship) => {
+      this.char.starships.map((starship) => {
         fetch(starship)
           .then((response) => response.json())
           .then((data) => {
             this.starships.push(data.name)
           });
       });
-      this.obj.vehicles.map((vehicle) => {
+      this.char.vehicles.map((vehicle) => {
         fetch(vehicle)
           .then((response) => response.json())
           .then((data) => {
@@ -59,6 +71,9 @@ export default {
           });
       });
     },
+    expandArray(){
+      this.hidden = !this.hidden
+    }
   },
 };
 </script>
@@ -68,9 +83,15 @@ export default {
 h1 {
   font-size: 5vw;
 }
+
+h2 {
+  font-size: 3vw;
+}
 ul {
   list-style-type: none;
   padding: 0;
+  display: inline-flex;
+  flex-direction: column;
 }
 li {
   display: inline-block;
@@ -80,10 +101,15 @@ a {
   color: #42b983;
 }
 
-.char {
-  display: flex;
-  flex-direction: column;
+.CharData {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
+}
+
+.List {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .responsive {

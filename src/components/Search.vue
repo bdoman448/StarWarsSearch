@@ -11,28 +11,27 @@
           v-for="(obj, index) in filteredResults"
           :key="index"
         >
-          <CharTile :name="obj.name" :obj="obj" />
+        <router-link  v-if="receivedResults[0]" :to="{name:'Char', params: {id: obj.name, obj:obj}}">
+          <CharTile :name="obj.name"/>
+        </router-link>
         </li>
       </ul>
     </div>
     <button class="expand_list" v-if="!expand && this.receivedResults.length > 0" @click="expandList">
       Load More
     </button>
-    <CharData :obj="receivedResults[0]"/>
   </div>
 </template>
 
 <script>
 import CharTile from "./CharTile.vue";
 import DropDown from "./Dropdown.vue";
-import CharData from "./CharacterData.vue";
 
 export default {
   name: "Search",
   components: {
     CharTile,
     DropDown,
-    CharData,
   },
   data() {
     return {
@@ -45,7 +44,7 @@ export default {
     };
   },
 
-  mounted(){
+  created(){
     this.getSwData()
   },
 
