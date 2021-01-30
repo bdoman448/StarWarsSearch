@@ -12,9 +12,7 @@
 <script>
 export default {
   name: "DropDown",
-  props: {
-    list: Array,
-  },
+
   data() {
     return {
       menuOpen: false,

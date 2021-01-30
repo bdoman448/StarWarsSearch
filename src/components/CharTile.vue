@@ -17,9 +17,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-size: 5vw;
+@media screen and (min-width: 800px) {
+  h1 {
+    font-size: 3vw;
+    width: 100%;
+  }
 }
+
+@media screen and (max-width: 800px) {
+  h1 {
+    font-size: 100%;
+     width: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  h1 {
+    font-size: 80%;
+     width: 100%;
+  }
+}
+
 ul {
   list-style-type: none;
   padding: 0;

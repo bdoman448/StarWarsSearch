@@ -1,23 +1,25 @@
 <template>
   <div>
     <h1>Hello from STARWARS</h1>
-  <div class="CharData">
-    <div class="Data">
-      <h2>Name: {{this.char.name}} </h2>
-      <h2>Height: {{this.char.height}} </h2>
-      <h2>Homeworld: {{this.homeworld}} </h2>
-      <div class="List">
-        <h2 @click="expandArray">Starship:</h2>
-        <ul>
-          <li v-for="(starship,index) in starships" :key="index">
-            {{starship}}
-          </li>
-        </ul>
+    <div class="CharData">
+      <div class="Data">
+        <h2>Name: {{ this.char.name }}</h2>
+        <h2>Height: {{ this.char.height }}</h2>
+        <h2>Homeworld: {{ this.homeworld }}</h2>
+        <div class="List">
+          <h2 @click="expandArray">Starship:</h2>
+          <ul>
+            <li v-for="(starship, index) in starships" :key="index">
+              {{ starship }}
+            </li>
+          </ul>
+        </div>
       </div>
+      <img src="../assets/trooper.jpg" class="responsive" />
     </div>
-          <img src="../assets/trooper.jpg" class="responsive">
-  </div>
-
+    <router-link :to="{ name: 'Home' }">
+      <button>Back</button>
+    </router-link>
   </div>
 </template>
 
@@ -26,11 +28,11 @@ export default {
   name: "CharData",
   data() {
     return {
-      homeworld: "Search Character",
+      homeworld: "",
       starships: [],
       vehicles: [],
       hidden: true,
-      char: Object
+      char: Object,
     };
   },
 
@@ -38,18 +40,29 @@ export default {
     obj: Object,
   },
 
-  mounted () {
-    console.log(this.char)
-    this.fetchData();
+  mounted() {
+    this.getData()
   },
 
   methods: {
-    fetchData() {
-     
-      this.char = this.$route.params.obj;
-       console.log("Before")
-      console.log(this.char)
-       console.log("After")
+    getData() {
+      if (this.$store.getters.charListlength === 0) {
+        this.$store.dispatch("fetchChars").then(() => {
+          this.$store.dispatch(
+            "findObject",
+            this.$router.currentRoute.params.id
+          );
+          this.char = this.$store.getters.foundObj;
+          this.fetchCharData();
+        });
+      } else {
+        this.$store.dispatch("findObject", this.$router.currentRoute.params.id);
+        this.char = this.$store.getters.foundObj;
+        this.fetchCharData();
+      }
+    },
+
+    fetchCharData() {
       fetch(this.char.homeworld)
         .then((response) => response.json())
         .then((data) => {
@@ -60,20 +73,21 @@ export default {
         fetch(starship)
           .then((response) => response.json())
           .then((data) => {
-            this.starships.push(data.name)
+            this.starships.push(data.name);
           });
       });
       this.char.vehicles.map((vehicle) => {
         fetch(vehicle)
           .then((response) => response.json())
           .then((data) => {
-            this.vehicles.push(data.name)
+            this.vehicles.push(data.name);
           });
       });
     },
-    expandArray(){
-      this.hidden = !this.hidden
-    }
+
+    expandArray() {
+      this.hidden = !this.hidden;
+    },
   },
 };
 </script>

@@ -1,23 +1,23 @@
 <template>
   <div class="Search">
-    <input type="text" v-model="charSearch" @input="filterList" @click="charSearch = ''" @mouseleave="charSearch = 'Search Character'" />
-    <button @click="getSwData">Get data</button>
-    <h2>Showing {{visibleChars}} of {{ receivedResults.length }}</h2>
-    <DropDown :list="filteredResults" />
+<!--     @input="filterList" -->
+    <input type="text" v-model="charSearch"  @input="filterList" @click="charSearch = ''"/>
+    <h2>Showing {{visibleChars}} of {{ this.$store.getters.charList.length }}</h2>
+    <DropDown />
     <div>
       <ul class="result">
         <li
           :class="expand ? 'active' : 'hidden'"
-          v-for="(obj, index) in filteredResults"
+          v-for="(obj, index) in this.$store.state.filteredChars"
           :key="index"
         >
-        <router-link  v-if="receivedResults[0]" :to="{name:'Char', params: {id: obj.name, obj:obj}}">
+        <router-link  :to="{name:'Char', params: {id: obj.name, obj:obj}}">
           <CharTile :name="obj.name"/>
         </router-link>
         </li>
       </ul>
     </div>
-    <button class="expand_list" v-if="!expand && this.receivedResults.length > 0" @click="expandList">
+    <button class="expand_list" v-if="!expand && this.$store.getters.charList.length > 0" @click="expandList">
       Load More
     </button>
   </div>
@@ -36,44 +36,34 @@ export default {
   data() {
     return {
       charSearch: "Search Character",
-      receivedResults: [],
-      filteredResults: [],
       expand: false,
-      sort_option: 1,
+
       visibleChars: 0,
     };
   },
 
-  created(){
-    this.getSwData()
+  mounted(){
+    this.$store.dispatch("fetchChars");
+    this.$store.dispatch("fetchFilms");
+  },
+
+  updated(){
+    this.visibleCharacters()
   },
 
   methods: {
-    getSwData() {
-      fetch("https://swapi.dev/api/people/")
-        .then((response) => response.json())
-        .then((data) => {
-          this.receivedResults = [...data.results];  //used for searching
-          this.filteredResults = this.receivedResults;
-          this.visibleChars = this.visibleCharacters();
-        });
-    },
     expandList() {
       this.expand = !this.expand;
-      this.visibleChars = this.visibleCharacters();
     },
     filterList() {
-      this.filteredResults = this.receivedResults.filter((result) => {
-        return result.name.toUpperCase().match(this.charSearch.toUpperCase());
-      });
-      this.visibleChars = this.visibleCharacters();
+      this.$store.commit('filterResults',this.charSearch)
     },
     visibleCharacters(){
-      if(this.filteredResults.length > 4 && !this.expand)
+      if(this.$store.state.filteredChars.length > 4 && !this.expand)
       {
-        return 4;
+        this.visibleChars = 4;
       }else
-        return this.filteredResults.length
+        this.visibleChars = this.$store.getters.filteredCharList.length
     },
   },
 };

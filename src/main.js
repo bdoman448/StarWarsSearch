@@ -3,9 +3,11 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import Search from './components/Search.vue'
 import Char from './components/CharacterData.vue'
+import { store } from './store/store.js'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
+
 
 const router = new VueRouter({
   routes: [
@@ -17,5 +19,6 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App),
 })
