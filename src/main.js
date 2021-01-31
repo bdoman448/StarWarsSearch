@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import Search from './components/Search.vue'
 import Char from './components/CharacterData.vue'
+import Film from './components/FilmData.vue'
 import { store } from './store/store.js'
 
 Vue.config.productionTip = false
@@ -12,7 +13,8 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
     {name: 'Home', path: '', component: Search},
-    {name: 'Char', path: '/char/:id', component: Char, props: true}
+    {name: 'Char', path: '/char/:id', component: Char, props: true},
+    {name: 'Film', path: '/film/:id', component: Film, props: true}
   ],
 })
 

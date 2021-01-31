@@ -9,14 +9,15 @@ export const store = new Vuex.Store({
         films: {},
         filteredChars: [],
         filteredFilms: [],
-        foundObj: null,
+        foundChar: null,
+        foundFilm: null,
+        sortOption: 1,
 	},
 	actions: {
         fetchChars({ commit }){
             return fetch("https://swapi.dev/api/people/")
             .then((response) => response.json())
             .then((data) => {
-                console.log("PROSAO FETCH CHARS")
                 commit('fillChars', [...data.results])
             });
         },
@@ -27,42 +28,40 @@ export const store = new Vuex.Store({
                 commit('fillFilms', [...data.results])
             });
         },
-        findObject({commit},payload){
-            console.log("UPAO U FINDOBJECT")
-            console.log(payload)
-            console.log("IZASAO")
-            return commit('findObj', payload)
+        findChar({commit},payload){
+            return commit('findChar', payload)
+        },
+        findFilm({commit},payload){
+            console.log("AAAAA")
+            return commit('findFilm', payload)
+        },
+        changeSort({commit},payload) {
+            return commit('changeSort', payload)
         }
 	},
 	mutations: {
 		fillChars(state,payload) {
-            console.log("PROSAO FILL CHARS")
             state.characters = payload;
             state.filteredChars = payload;
-            console.log("UPISAO")
-            console.log(state.characters)
 		},
 		fillFilms(state,payload) {
             state.films = payload;
             state.filteredFilms = payload;
-            console.log("UPISAO2")
         },
         filterResults(state,payload) {
-            console.log("Pozvan")
-            console.log(payload)
             state.filteredChars = state.characters.filter((result) => {
                 return result.name.toUpperCase().match(payload.toUpperCase());
               });
-            console.log(state.filteredChars)
         },
-        findObj(state,payload){
-            console.log("Pozvan FINDOBJ")
-            console.log(state.characters.length)
-            console.log(state.characters.length === 0)
-            state.foundObj = state.characters.find((character) => character.name.match(payload))
-            console.log("NASAO SAM ")
-            console.log(state.foundObj)
-        }
+        findChar(state,payload){
+            state.foundChar = state.characters.find((character) => character.name.match(payload))
+        },
+        findFilm(state,payload){
+            state.foundFilm = state.characters.find((character) => character.title.match(payload))
+        },
+        changeSort(state,payload) {
+            state.sortOption = payload
+        }   
     },
     
     getters: {
@@ -72,14 +71,22 @@ export const store = new Vuex.Store({
         charListlength(state){
             return state.characters.length
         },
-        foundObj(state){
-            return state.foundObj
+        filmListlength(state){
+            console.log(state.films.length)
+            console.log(state.char.length)
+            return state.films.length
+        },
+
+        foundChar(state){
+            return state.foundChar
+        },
+        foundFilm(state){
+            return state.foundFilm
         },
 
         filteredCharList(state){
-            return state.filteredChars
+            return state.filteredChars.length
         },
-
 
     }
 

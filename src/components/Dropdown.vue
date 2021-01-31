@@ -1,11 +1,10 @@
 <template>
-  <div class="hello">
-    <button @click="dropDown" >Sort By</button>
-    <ul v-if="menuOpen">
-<!--       <button @click="sortOption('Asc')">Alphebetical Asc</button>
-      <button @click="sortOption('Dsc')">Alphebetical Desc</button>
-      <button @click="sortOption('Age')">Age</button> -->
-    </ul>
+  <div class="dropdown-menu">
+    <button @click="dropDown">Sort By</button>
+    <div class="dropdown-content">
+      <button @click="sortOption('People')">People</button>
+      <button @click="sortOption('Films')">Films</button>
+    </div>
   </div>
 </template>
 
@@ -22,30 +21,41 @@ export default {
     dropDown() {
       this.menuOpen = !this.menuOpen;
     },
-/*     sortOption(option) {
-      if (option === "Asc") {
-        this.list.sort((a, b) => (a.name > b.name ? 1 : -1));
-      } else if (option === "Dsc") {
-        this.list.sort((a, b) => (a.name < b.name ? 1 : -1));
+    sortOption(option) {
+      if (option === 'People') {
+        this.$store.dispatch("changeSort", 1)
       } else {
-        this.list.sort((a, b) => (a.age > b.age ? 1 : -1));
+        this.$store.dispatch("changeSort", 2);
       }
-    }, */
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-ul {
-  display: inline-flex;
-  flex-direction: column;
-  list-style-type: none;
-  padding: 0;
-}
-li {
+.dropdown-menu {
+  position: relative;
   display: inline-block;
+  margin-left: 1%;
 }
 
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu:hover .dropdown-content {
+  display: flex;
+}
 </style>

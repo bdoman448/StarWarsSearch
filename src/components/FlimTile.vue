@@ -1,16 +1,16 @@
 <template>
-  <div class="Char">
-    <img src="../assets/luke1.jpg" class="responsive">
-    <h1>{{name}}</h1>
+  <div class="film">
+    <img src="../assets/trooper.jpg" class="responsive">
+    <h1>{{title}}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CharTile',
+  name: 'FilmTile',
 
   props: {
-    name: String
+    title: String
   },
 }
 </script>
@@ -44,13 +44,13 @@ ul {
 }
 li {
   display: inline-block;
-  margin: 0 1%;
+  margin: 0 10px;
 }
 a {
   color: #42b983;
 }
 
-.char {
+.film {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -58,7 +58,7 @@ a {
 
 .responsive {
   width: 100%;
-  max-width: 90%;
+  max-width: 400px;
   height: auto;
 }
 </style>

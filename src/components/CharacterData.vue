@@ -1,25 +1,30 @@
 <template>
-  <div>
-    <h1>Hello from STARWARS</h1>
-    <div class="CharData">
+  <div class="CharData">
+      <img src="../assets/luke1.jpg" class="responsive" />
       <div class="Data">
         <h2>Name: {{ this.char.name }}</h2>
         <h2>Height: {{ this.char.height }}</h2>
         <h2>Homeworld: {{ this.homeworld }}</h2>
-        <div class="List">
-          <h2 @click="expandArray">Starship:</h2>
+        <div class="row">
+          <h2  class="header">Starship:</h2>
           <ul>
-            <li v-for="(starship, index) in starships" :key="index">
-              {{ starship }}
+            <li class="list_item" v-for="(starship, index) in starships" :key="index">
+              <h2>{{ starship }}</h2>
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <h2  class="header">Vehicle:</h2>
+          <ul>
+            <li v-for="(vehicle, index) in vehicles" :key="index">
+              <h2>{{ vehicle }}</h2>
             </li>
           </ul>
         </div>
       </div>
-      <img src="../assets/trooper.jpg" class="responsive" />
-    </div>
-    <router-link :to="{ name: 'Home' }">
+<!--     <router-link :to="{ name: 'Home' }">
       <button>Back</button>
-    </router-link>
+    </router-link> -->
   </div>
 </template>
 
@@ -49,15 +54,15 @@ export default {
       if (this.$store.getters.charListlength === 0) {
         this.$store.dispatch("fetchChars").then(() => {
           this.$store.dispatch(
-            "findObject",
+            "findChar",
             this.$router.currentRoute.params.id
           );
-          this.char = this.$store.getters.foundObj;
+          this.char = this.$store.getters.foundChar;
           this.fetchCharData();
         });
       } else {
-        this.$store.dispatch("findObject", this.$router.currentRoute.params.id);
-        this.char = this.$store.getters.foundObj;
+        this.$store.dispatch("findChar", this.$router.currentRoute.params.id);
+        this.char = this.$store.getters.foundChar;
         this.fetchCharData();
       }
     },
@@ -99,7 +104,10 @@ h1 {
 }
 
 h2 {
-  font-size: 3vw;
+  font-size: 25px;
+  display: flex;
+  justify-content: flex-start;
+  margin: 1vw;
 }
 ul {
   list-style-type: none;
@@ -107,6 +115,11 @@ ul {
   display: inline-flex;
   flex-direction: column;
 }
+
+img {
+  margin: 1vw;
+}
+
 li {
   display: inline-block;
   margin: 0 10px;
@@ -117,18 +130,39 @@ a {
 
 .CharData {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 40% auto;
+  grid-column-gap: 1vw;
   width: 100%;
+  margin: auto;
 }
 
-.List {
+.Data {
+  display: flex;
+  flex-direction: column; 
+}
+
+.row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
+}
+
+.header{
+  display: inline-block;
+}
+
+.row li h2{
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  left: 0px;
+}
+
+.row ul{
+  margin: 0;
 }
 
 .responsive {
   width: 100%;
-  max-width: 400px;
   height: auto;
 }
 </style>
