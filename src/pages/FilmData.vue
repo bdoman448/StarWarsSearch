@@ -1,20 +1,23 @@
 <template>
-  <div class="CharData">
-      <img src="../assets/luke1.jpg" class="responsive" />
+  <div>
+    <div class="FilmData">
+      <img src="../assets/trooper.jpg" class="responsive" />
       <div class="Data">
-        <h2>Name: {{ this.char.name }}</h2>
-        <h2>Height: {{ this.char.height }}</h2>
-        <h2>Homeworld: {{ this.homeworld }}</h2>
+        <h2>Title: {{ this.film.title }}</h2>
         <div class="row">
-          <h2  class="header">Starship:</h2>
+          <h2 class="ListType">Starships:</h2>
           <ul>
-            <li class="list_item" v-for="(starship, index) in starships" :key="index">
+            <li
+              class="list_item"
+              v-for="(starship, index) in starships"
+              :key="index"
+            >
               <h2>{{ starship }}</h2>
             </li>
           </ul>
         </div>
         <div class="row">
-          <h2  class="header">Vehicle:</h2>
+          <h2 class="ListType">Vehicles:</h2>
           <ul>
             <li v-for="(vehicle, index) in vehicles" :key="index">
               <h2>{{ vehicle }}</h2>
@@ -22,22 +25,24 @@
           </ul>
         </div>
       </div>
-<!--     <router-link :to="{ name: 'Home' }">
-      <button>Back</button>
-    </router-link> -->
+    </div>
+    <router-link :to="{ name: 'Home' }">
+      <div class="backButton">
+        <button>Back</button>
+      </div>
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: "CharData",
+  name: "FilmData",
   data() {
     return {
-      homeworld: "",
       starships: [],
       vehicles: [],
       hidden: true,
-      char: Object,
+      film: Object,
     };
   },
 
@@ -46,52 +51,42 @@ export default {
   },
 
   mounted() {
-    this.getData()
+    this.getData();
   },
 
   methods: {
     getData() {
-      if (this.$store.getters.charListlength === 0) {
-        this.$store.dispatch("fetchChars").then(() => {
-          this.$store.dispatch(
-            "findChar",
-            this.$router.currentRoute.params.id
-          );
-          this.char = this.$store.getters.foundChar;
-          this.fetchCharData();
+      if (this.$store.getters.filmListlength === 0) {
+        this.$store.dispatch("fetchFilms").then(() => {
+          this.$store.dispatch("findFilm", this.$router.currentRoute.params.id);
+          this.film = this.$store.getters.foundFilm;
+          this.fetchFilmData();
         });
       } else {
-        this.$store.dispatch("findChar", this.$router.currentRoute.params.id);
-        this.char = this.$store.getters.foundChar;
-        this.fetchCharData();
+        this.$store
+          .dispatch("findFilm", this.$router.currentRoute.params.id)
+          .then(() => {
+            this.film = this.$store.getters.foundFilm;
+            this.fetchFilmData();
+          });
       }
     },
 
-    fetchCharData() {
-      fetch(this.char.homeworld)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          this.homeworld = data.name;
-        });
-      this.char.starships.map((starship) => {
+    fetchFilmData() {
+      this.film.starships.map((starship) => {
         fetch(starship)
           .then((response) => response.json())
           .then((data) => {
             this.starships.push(data.name);
           });
       });
-      this.char.vehicles.map((vehicle) => {
+      this.film.vehicles.map((vehicle) => {
         fetch(vehicle)
           .then((response) => response.json())
           .then((data) => {
             this.vehicles.push(data.name);
           });
       });
-    },
-
-    expandArray() {
-      this.hidden = !this.hidden;
     },
   },
 };
@@ -109,6 +104,12 @@ h2 {
   justify-content: flex-start;
   margin: 1vw;
 }
+
+button {
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -128,7 +129,7 @@ a {
   color: #42b983;
 }
 
-.CharData {
+.FilmData {
   display: grid;
   grid-template-columns: 40% auto;
   grid-column-gap: 1vw;
@@ -138,7 +139,7 @@ a {
 
 .Data {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .row {
@@ -146,18 +147,18 @@ a {
   grid-template-columns: auto 1fr;
 }
 
-.header{
+.ListType {
   display: inline-block;
 }
 
-.row li h2{
+.row li h2 {
   display: flex;
   justify-content: flex-start;
   position: relative;
   left: 0px;
 }
 
-.row ul{
+.row ul {
   margin: 0;
 }
 
@@ -165,4 +166,25 @@ a {
   width: 100%;
   height: auto;
 }
+
+.backButton {
+  text-align: center;
+}
+
+@media screen and (min-width: 500px) {
+  h2 {
+    font-size: 2.5vw;
+    width: 100%;
+  }
+  button {
+    font-size: 3vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  h2 {
+    font-size: 3vw;
+  }
+}
+
 </style>

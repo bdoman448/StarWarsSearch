@@ -1,42 +1,40 @@
 <template>
-  <div class="FilmCard">
-    <img src="../assets/trooper.jpg" class="responsive">
+  <div class="CharacterCard">
+    <img src="../assets/luke1.jpg" class="responsive" />
     <div class="CardTitle">
-    <h1>{{title}}</h1>
+      <h1>{{ name }}</h1>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'FilmTile',
+  name: "CharacterTile",
+
   props: {
-    title: String
+    name: String,
   },
-}
+};
 </script>
-
-
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.FilmCard {
+
+.CharacterCard {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: auto;
   text-align: center;
-  background-color:rgb(26, 167, 202);;
+  background-color: rgb(26, 167, 202);
   padding: 1px;
   padding-top: 5px;
   height: 100%;
   margin-bottom: 5%;
 }
 
-
-
 img {
-  max-width:98%;
-  max-height:auto;
+  max-width: 98%;
+  max-height: auto;
   margin: auto;
   min-width: 95%;
 }
@@ -55,7 +53,7 @@ h1 {
 }
 
 @media screen and (max-width: 600px) {
-  .FilmCard{
+  .CharacterCard{
       padding-top: 2px;
   }
 }

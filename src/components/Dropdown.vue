@@ -1,11 +1,9 @@
 <template>
-  <div class="dropdown-menu">
-    <button @click="dropDown">Sort By</button>
-    <div class="dropdown-content">
-      <button @click="sortOption('People')">People</button>
-      <button @click="sortOption('Films')">Films</button>
-    </div>
-  </div>
+  <select class="select" v-model="selected" @change="sortOption(selected)">
+    <option value="SortBy" selected disabled hidden>Sort By</option>
+    <option value="People">People</option>
+    <option value="Film">Films</option>
+  </select>
 </template>
 
 <script>
@@ -14,7 +12,7 @@ export default {
 
   data() {
     return {
-      menuOpen: false,
+      selected: "SortBy",
     };
   },
   methods: {
@@ -22,10 +20,10 @@ export default {
       this.menuOpen = !this.menuOpen;
     },
     sortOption(option) {
-      if (option === 'People') {
-        this.$store.dispatch("changeSort", 1)
-      } else {
+      if (option === "Film") {
         this.$store.dispatch("changeSort", 2);
+      } else {
+        this.$store.dispatch("changeSort", 1);
       }
     },
   },
@@ -34,28 +32,23 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.dropdown-menu {
-  position: relative;
-  display: inline-block;
+.select {
   margin-left: 1%;
+  border: 1px solid;
+  font-size: 20px;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+@media screen and (max-width: 1000px) {
+  .select {
+    font-size: 4vw;
+    margin-left: 2%;
+  }
 }
 
-.dropdown-content button {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-menu:hover .dropdown-content {
-  display: flex;
+@media screen and (max-width: 400px) {
+  .select {
+    font-size: 3vw;
+    margin-left: 2%;
+  }
 }
 </style>
